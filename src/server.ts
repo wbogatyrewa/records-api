@@ -16,6 +16,14 @@ app.use(cors(options));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(function(req: Request, res: Response, next: NextFunction) {
+  res.header(
+    "Access-Control-Allow-Headers",
+    "x-access-token, Origin, Content-Type, Accept"
+  );
+  next();
+});
+
 sequelize.sync({ force: true }).then(() => {
   console.log('Database has been synced');
 });
