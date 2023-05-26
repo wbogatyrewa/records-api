@@ -1,7 +1,8 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import userRouter from './routes/user';
 import sequelize from './models';
+import userRouter from './routes/user';
+import recordRouter from './routes/record';
 
 
 const app: Express = express();
@@ -20,6 +21,7 @@ sequelize.sync({ force: true }).then(() => {
 });
 
 app.use('/api/users', userRouter);
+app.use('/api/records', recordRouter);
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
