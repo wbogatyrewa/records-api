@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 import RecordModel from '../models/record';
 
 interface Pagination {
@@ -41,9 +40,29 @@ export const getRecords = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
+// получать, сохранять файл и прописать путь к нему
+
 export const addRecord = async (req: Request, res: Response): Promise<void> => {
-  
+  try {    
+    const userId = req.userId;
+    const { text, mediaPath } = req.body;
+    if (!text && !mediaPath) res.status(500).send('Content can not be empty');
+
+    const data = {
+      date: new Date(),
+      text: text,
+      mediaPath: mediaPath,
+      userId: userId
+    };
+
+    const record = RecordModel.create(data);
+    res.status(200).send('New record successfully added'); 
+  } catch (error) {
+    res.status(500).send(`Adding record error: ${error}`);
+  }
 };
+
+// добавить мидлвар на проверку юзера и записи
 
 export const editRecord = async (req: Request, res: Response): Promise<void> => {};
 
