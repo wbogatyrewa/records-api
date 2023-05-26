@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv';
+// import User from './user.ts';
 
 dotenv.config();
 
@@ -19,3 +20,12 @@ sequelize.authenticate().then(() => {
   console.log(`Unable to connect to the database: ${error}`);
 });
 
+// const db = {
+//   Sequelize: Sequelize,
+//   sequelize: sequelize,
+//   users: User(sequelize, DataTypes)
+// };
+
+// export default db;
+
+export default sequelize;
