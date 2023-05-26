@@ -1,6 +1,5 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
 import userRouter from './routes/user';
 import sequelize from './models';
 
@@ -13,8 +12,8 @@ const options: cors.CorsOptions = {
 };
 
 app.use(cors(options));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 sequelize.sync({ force: true }).then(() => {
   console.log('Database has been synced');
