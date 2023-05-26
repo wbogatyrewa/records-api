@@ -3,6 +3,17 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import UserModel from '../models/user';
 
+/**
+
+Signs up a new user. The method hashes the password and generates a jwt-token.
+*
+
+@param {Request} req - The request object containing the user's name and password.
+
+@param {Response} res - The response object to send the response to.
+
+@returns {Promise} - A promise that resolves when the signup is complete.
+*/
 export const signup = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, password } = req.body;
@@ -27,6 +38,17 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+/**
+
+User login using jwt-token. 
+*
+
+@param {Request} req - The request object containing the user's name and password.
+
+@param {Response} res - The response object to send the response to.
+
+@returns {Promise} - A promise that resolves when the login is complete.
+*/
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const {name, password} = req.body;
