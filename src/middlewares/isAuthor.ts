@@ -3,9 +3,6 @@ import RecordModel from '../models/record';
 
 export const isAuthor = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    // получить id юзера после декодинга и UserId записи
-    // сравнить эти id
-    // если норм, то вызвать next(), если нет, то выкинуть ошибку
     const userTokenId = req.body.UserId;
     const recordId = req.params.id;
     const record = await RecordModel.findByPk(recordId);
