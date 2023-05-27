@@ -1,4 +1,4 @@
-**API Server** 
+# API Server 
  
 ## Description 
 This is an API server built using Node.js and Express. It serves as the backend for our application and provides endpoints for client-side requests. 
@@ -23,7 +23,7 @@ Updates the record with the given ID in the database with the provided informati
 ### POST /api/records/delete/:id 
 Deletes the record with the given ID from the database.
 
-**Frontend** 
+# Frontend 
 
 ## Description 
 This is a frontend built using React. It communicates with the API server to display and manipulate data.
