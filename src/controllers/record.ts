@@ -53,8 +53,8 @@ export const addRecord = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const mediaPath = `media/${(new Date()).toLocaleString()}`;
-    file.mv(`../../${mediaPath}`, function(error) {
+    const mediaPath = `/media/${(new Date()).toLocaleString()}`;
+    file.mv(`../..${mediaPath}`, function(error) {
       if (error) {
         res.status(500).send(`No files were uploaded: ${error}`);
         return;
@@ -94,7 +94,7 @@ export const editRecord = async (req: Request, res: Response): Promise<void> => 
       return;
     }
 
-    const mediaPath = `media/${(new Date()).toLocaleString()}`;
+    const mediaPath = `/media/${(new Date()).toLocaleString()}`;
     file.mv(mediaPath, function(error) {
       if (error) {
         res.status(500).send(`No files were uploaded: ${error}`);
@@ -103,7 +103,7 @@ export const editRecord = async (req: Request, res: Response): Promise<void> => 
     });
 
     const oldPath = recordById.get('mediaPath');
-    fs.unlink(`../../${oldPath}`, (err) => {
+    fs.unlink(`../..${oldPath}`, (err) => {
       if (err) throw err;
       console.log('Delete file');
     });
@@ -142,7 +142,7 @@ export const deleteRecord = async (req: Request, res: Response): Promise<void> =
     }
 
     const oldPath = recordById.get('mediaPath');
-    fs.unlink(`../../${oldPath}`, (err) => {
+    fs.unlink(`../..${oldPath}`, (err) => {
       if (err) throw err;
       console.log('Delete file');
     });
