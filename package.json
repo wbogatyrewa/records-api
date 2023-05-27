@@ -4,9 +4,9 @@
   "description": "Records API for test task from WelbeX",
   "main": "server.ts",
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "tsc && nodemon -q dist/server.js"
+    "dev": "nodemon -q src/server.ts"
   },
   "keywords": [],
   "author": "wbogatyrewa",
