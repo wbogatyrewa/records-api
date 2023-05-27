@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,8 +8,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { signin } from '../../api/signin';
 
-// TODO remove, this demo shouldn't need to reset the theme.
+interface SignInProps {
+  changeUser: (name: string) => void;
+  changeToken: (token: string) => void;
+}
+
 const defaultTheme = createTheme();
 
 const style = {
@@ -24,14 +29,28 @@ const style = {
   p: 4,
 };
 
-export default function SignIn() {
+export default function SignIn({ changeUser = () => {}, changeToken = () => {} }: SignInProps) {
+  const [error, setError] = useState<boolean>(false);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const name = data.get('name')?.toString();
+    const password = data.get('password')?.toString();
+    if (name && password) {
+      setError(false);
+      signin(name, password).then(result => {
+        if (result !== undefined && result !== null) {
+          changeUser(result.name);
+          changeToken(result.token);    
+        } else {
+          alert('Unauthorized: check name and password');
+        }
+      });
+    }
+    else {
+      setError(true);
+    }
   };
 
   return (
@@ -63,6 +82,7 @@ export default function SignIn() {
                 name="name"
                 autoComplete="name"
                 autoFocus
+                error={error}
               />
               <TextField
                 margin="normal"
@@ -73,6 +93,7 @@ export default function SignIn() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                error={error}
               />
               <Button
                 type="submit"
