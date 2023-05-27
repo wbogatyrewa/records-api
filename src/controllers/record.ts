@@ -35,6 +35,7 @@ export const getRecords = async (req: Request, res: Response): Promise<void> => 
     const data = await RecordModel.findAndCountAll({ where: {}, limit, offset });
     const records = getPagingData(data, (page || '').toString(), limit);
     res.status(200).send(records);
+    return;
   } catch (error) {
     res.status(500).send(`Getting records failed with error: ${error}`);
   }
@@ -44,9 +45,11 @@ export const getRecords = async (req: Request, res: Response): Promise<void> => 
 
 export const addRecord = async (req: Request, res: Response): Promise<void> => {
   try {    
-    const userId = req.userId;
-    const { text, mediaPath } = req.body;
-    if (!text && !mediaPath) res.status(500).send('Content can not be empty');
+    const { userId, text, mediaPath } = req.body;
+    if (!text && !mediaPath) {
+      res.status(500).send('Content can not be empty');
+      return;
+    }
 
     const data = {
       date: new Date(),
@@ -55,7 +58,9 @@ export const addRecord = async (req: Request, res: Response): Promise<void> => {
       userId: userId
     };
 
-    const record = RecordModel.create(data);
+    console.log(data);
+
+    // const record = RecordModel.create(data);
     res.status(200).send('New record successfully added'); 
   } catch (error) {
     res.status(500).send(`Adding record error: ${error}`);

@@ -7,13 +7,17 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
 
     if (!token) {
       res.status(403).send('No token provided');
+      return;
     }
 
     jwt.verify((token || '').toString(), process.env.SECRET_KEY || '', (error, decoded) => {
       if (error) {
         res.status(401).send('Unauthorized');
+        return;
       }
-      req.userId = decoded?.id;
+      //  LOGS!!!
+      console.log(decoded);
+      req.body.userId = decoded;
       next();
     });
   } catch (error) {

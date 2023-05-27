@@ -17,7 +17,10 @@ Signs up a new user. The method hashes the password and generates a jwt-token.
 export const signup = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, password } = req.body;
-    if (!name || !password) res.status(400).json({ message: 'Name and password are required' });
+    if (!name || !password) {
+      res.status(400).json({ message: 'Name and password are required' });
+      return;
+    }
     const data = {
       name,
       password: await bcrypt.hash(password, parseInt(process.env.SALT_OF_ROUNDS as string)),
@@ -32,9 +35,11 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
         token: token,
         name: name
       });
+      return;
     }
     else {
       res.status(409).send('Details are not correct');
+      return;
     }
   } catch (error) {
     res.status(409).send(`Registration failed with error: ${error}`);
@@ -67,17 +72,21 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY || '', {
           expiresIn: 1 * 24 * 60 * 60 * 1000,
         });
+
         res.status(201).send({
           token: token,
           name: name
         });
+        return;
       }
       else {
         res.status(401).send('Authentication failed');
+        return;
       }
     }
     else {
       res.status(401).send('Authentication failed');
+      return;
     }
   } catch (error) {
     res.status(401).send(`Authorization failed with error: ${error}`);
