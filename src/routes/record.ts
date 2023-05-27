@@ -1,12 +1,13 @@
 import express, { Router } from "express";
 import { getRecords, addRecord, editRecord, deleteRecord } from "../controllers/record";
 import { verifyToken } from "../middlewares/verifyToken";
+import { isAuthor } from "../middlewares/isAuthor";
 
 const recordRouter: Router = express.Router();
 
 recordRouter.get('/', getRecords);
 recordRouter.post('/add', verifyToken, addRecord);
-recordRouter.post('/edit', verifyToken, editRecord);
-recordRouter.post('/delete', verifyToken, deleteRecord);
+recordRouter.post('/edit/:id', [verifyToken, isAuthor], editRecord);
+recordRouter.post('/delete/:id', [verifyToken, isAuthor], deleteRecord);
 
 export default recordRouter;
