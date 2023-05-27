@@ -45,23 +45,20 @@ export const getRecords = async (req: Request, res: Response): Promise<void> => 
 
 export const addRecord = async (req: Request, res: Response): Promise<void> => {
   try {    
-    const { userId, text, mediaPath } = req.body;
+    const { UserId, text, mediaPath } = req.body;
     if (!text && !mediaPath) {
       res.status(500).send('Content can not be empty');
       return;
     }
 
     const data = {
-      date: new Date(),
       text: text,
       mediaPath: mediaPath,
-      userId: userId
+      UserId: UserId
     };
-
-    console.log(data);
-
-    // const record = RecordModel.create(data);
-    res.status(200).send('New record successfully added'); 
+    RecordModel.create(data);
+    res.status(200).send('New record successfully added');
+    return;
   } catch (error) {
     res.status(500).send(`Adding record error: ${error}`);
   }

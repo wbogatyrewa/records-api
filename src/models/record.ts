@@ -4,7 +4,6 @@ import UserModel from './user';
 
 interface RecordModel extends Model<InferAttributes<RecordModel>, InferCreationAttributes<RecordModel>> {
   id: CreationOptional<number>;
-  date: Date;
   text: string;
   mediaPath: string;
 }
@@ -14,10 +13,6 @@ const RecordModel = sequelize.define<RecordModel>('Record', {
     primaryKey: true,
     type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
-    allowNull: false
-  },
-  date: {
-    type: DataTypes.DATE,
     allowNull: false
   },
   text: {

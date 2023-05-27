@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction  } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 export const verifyToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -12,12 +12,10 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
 
     jwt.verify((token || '').toString(), process.env.SECRET_KEY || '', (error, decoded) => {
       if (error) {
-        res.status(401).send('Unauthorized');
+        res.status(401).send(`Unauthorized: ${error}`);
         return;
       }
-      //  LOGS!!!
-      console.log(decoded);
-      req.body.userId = decoded;
+      req.body.UserId = (decoded as JwtPayload).id;
       next();
     });
   } catch (error) {
