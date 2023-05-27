@@ -19,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload({
   createParentPath: true
 }));
+app.use('/media', express.static('../media'));
 
 app.use(function(req: Request, res: Response, next: NextFunction) {
   res.header(
