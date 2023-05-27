@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import RecordModel from '../models/record';
+import { UploadedFile } from 'express-fileupload';
+import fs from 'fs';
 
 interface Pagination {
   limit: number;
@@ -41,22 +43,31 @@ export const getRecords = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-// получать, сохранять файл и прописать путь к нему
-
 export const addRecord = async (req: Request, res: Response): Promise<void> => {
   try {    
-    const { UserId, text, mediaPath } = req.body;
-    if (!text && !mediaPath) {
+    const { UserId, text } = req.body;
+    const file = (req.files?.media) as UploadedFile;
+
+    if (!text && !file) {
       res.status(500).send('Content can not be empty');
       return;
     }
 
-    const data = {
+    const mediaPath = `media/${(new Date()).toLocaleString()}`;
+    file.mv(`../../${mediaPath}`, function(error) {
+      if (error) {
+        res.status(500).send(`No files were uploaded: ${error}`);
+        return;
+      }
+    });
+
+    const record = {
       text: text,
       mediaPath: mediaPath,
       UserId: UserId
     };
-    await RecordModel.create(data);
+    
+    await RecordModel.create(record);
     res.status(200).send('New record successfully added');
     return;
   } catch (error) {
@@ -64,14 +75,49 @@ export const addRecord = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// добавить мидлвар на проверку юзера и записи
-
+// загружать новые медиа, удалять старые
 export const editRecord = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = req.params.id;
-    const [data] = await RecordModel.update(req.body, {
+    const recordById = await RecordModel.findByPk(id);
+
+    if (!recordById) {
+      res.status(500).send(`Record doesn't exist`);
+      return;
+    }
+
+    const { UserId, text } = req.body;
+    const file = (req.files?.media) as UploadedFile; 
+
+    if (!text && !file) {
+      res.status(500).send('Content can not be empty');
+      return;
+    }
+
+    const mediaPath = `media/${(new Date()).toLocaleString()}`;
+    file.mv(mediaPath, function(error) {
+      if (error) {
+        res.status(500).send(`No files were uploaded: ${error}`);
+        return;
+      }
+    });
+
+    const oldPath = recordById.get('mediaPath');
+    fs.unlink(`../../${oldPath}`, (err) => {
+      if (err) throw err;
+      console.log('Delete file');
+    });
+
+    const updateRecord = {
+      text: text,
+      mediaPath: mediaPath,
+      UserId: UserId
+    };
+
+    const [data] = await RecordModel.update(updateRecord, {
       where: { id: id }
     });
+
     if (data === 1) {
       res.status(200).send('Record was updated successfully');
       return;
@@ -84,9 +130,23 @@ export const editRecord = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
+// удалять медиа поста с сервера
 export const deleteRecord = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = req.params.id;
+    const recordById = await RecordModel.findByPk(id);
+
+    if (!recordById) {
+      res.status(500).send(`Record doesn't exist`);
+      return;
+    }
+
+    const oldPath = recordById.get('mediaPath');
+    fs.unlink(`../../${oldPath}`, (err) => {
+      if (err) throw err;
+      console.log('Delete file');
+    });
+
     const data = await RecordModel.destroy({
       where: { id: id }
     });

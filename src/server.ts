@@ -1,6 +1,7 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import sequelize from './models';
+import fileUpload from 'express-fileupload';
 import userRouter from './routes/user';
 import recordRouter from './routes/record';
 
@@ -15,6 +16,9 @@ const options: cors.CorsOptions = {
 app.use(cors(options));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload({
+  createParentPath: true
+}));
 
 app.use(function(req: Request, res: Response, next: NextFunction) {
   res.header(
