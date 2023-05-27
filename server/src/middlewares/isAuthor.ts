@@ -1,6 +1,17 @@
 import { Request, Response, NextFunction  } from 'express';
 import RecordModel from '../models/record';
 
+/** 
+ * Checks if the user making the request is the author of the specified record. 
+ * 
+ * @async 
+ * @method isAuthor 
+ * @param {Request} req - Express request object. 
+ * @param {Response} res - Express response object. 
+ * @param {NextFunction} next - Express next middleware function. 
+ * @returns {Promise<void>} - Promise that resolves if the user is the author of the record. 
+ * @throws {Error} - Throws an error if there is an issue with the authorization. 
+ */
 export const isAuthor = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const userTokenId = req.body.UserId;

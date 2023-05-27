@@ -29,6 +29,16 @@ const getPagingData = (data: any, page: string, limit: number): PagingData => {
   return { totalItems, records, totalPages, currentPage };
 };
 
+/** 
+ * Retrieves a paginated list of records from the database. 
+ * 
+ * @async 
+ * @method getRecords 
+ * @param {Request} req - Express request object. 
+ * @param {Response} res - Express response object. 
+ * @returns {Promise<void>} - Promise that resolves when the records are retrieved from the database. 
+ * @throws {Error} - Throws an error if there is an issue retrieving the records. 
+ */ 
 export const getRecords = async (req: Request, res: Response): Promise<void> => {
   try {
     const { page, size } = req.query;
@@ -43,6 +53,16 @@ export const getRecords = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
+/** 
+ * Adds a new record to the database with the given information. 
+ * 
+ * @async 
+ * @method addRecord 
+ * @param {Request} req - Express request object. 
+ * @param {Response} res - Express response object. 
+ * @returns {Promise<void>} - Promise that resolves when the record is added to the database. 
+ * @throws {Error} - Throws an error if there is an issue adding the record. 
+ */ 
 export const addRecord = async (req: Request, res: Response): Promise<void> => {
   try {    
     const { UserId, text } = req.body;
@@ -75,7 +95,16 @@ export const addRecord = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// загружать новые медиа, удалять старые
+/** 
+ * Updates the record with the given ID in the database with the provided information. 
+ * 
+ * @async 
+ * @method editRecord 
+ * @param {Request} req - Express request object. 
+ * @param {Response} res - Express response object. 
+ * @returns {Promise<void>} - Promise that resolves when the record is updated in the database. 
+ * @throws {Error} - Throws an error if there is an issue updating the record. 
+ */ 
 export const editRecord = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = req.params.id;
@@ -130,7 +159,16 @@ export const editRecord = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-// удалять медиа поста с сервера
+/** 
+ * Deletes the record with the given ID from the database. 
+ * 
+ * @async 
+ * @method deleteRecord 
+ * @param {Request} req - Express request object. 
+ * @param {Response} res - Express response object. 
+ * @returns {Promise<void>} - Promise that resolves when the record is deleted from the database. 
+ * @throws {Error} - Throws an error if there is an issue deleting the record. 
+ */ 
 export const deleteRecord = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = req.params.id;

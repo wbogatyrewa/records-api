@@ -3,17 +3,16 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import UserModel from '../models/user';
 
-/**
-
-Signs up a new user. The method hashes the password and generates a jwt-token.
-*
-
-@param {Request} req - The request object containing the user's name and password.
-
-@param {Response} res - The response object to send the response to.
-
-@returns {Promise} - A promise that resolves when the signup is complete.
-*/
+/** 
+ * Registers a new user with the given name and password. 
+ * 
+ * @async 
+ * @method signup 
+ * @param {Request} req - Express request object. 
+ * @param {Response} res - Express response object. 
+ * @returns {Promise<void>} - Promise that resolves when the user is registered. 
+ * @throws {Error} - Throws an error if there is an issue with registration. 
+ */ 
 export const signup = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, password } = req.body;
@@ -46,17 +45,16 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-/**
-
-User login using jwt-token. 
-*
-
-@param {Request} req - The request object containing the user's name and password.
-
-@param {Response} res - The response object to send the response to.
-
-@returns {Promise} - A promise that resolves when the login is complete.
-*/
+/** 
+ * Logs in a user with the given name and password. 
+ * 
+ * @async 
+ * @method login 
+ * @param {Request} req - Express request object. 
+ * @param {Response} res - Express response object. 
+ * @returns {Promise<void>} - Promise that resolves when the user is logged in. 
+ * @throws {Error} - Throws an error if there is an issue with logging in. 
+ */ 
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const {name, password} = req.body;

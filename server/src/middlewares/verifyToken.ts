@@ -1,6 +1,17 @@
 import { Request, Response, NextFunction  } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
+/** 
+ * Verifies the JWT token provided in the request headers. 
+ * 
+ * @async 
+ * @method verifyToken 
+ * @param {Request} req - Express request object. 
+ * @param {Response} res - Express response object. 
+ * @param {NextFunction} next - Express next middleware function. 
+ * @returns {Promise<void>} - Promise that resolves when the token is verified. 
+ * @throws {Error} - Throws an error if there is an issue with verifying the token. 
+ */ 
 export const verifyToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const token = req.headers['x-access-token'];
