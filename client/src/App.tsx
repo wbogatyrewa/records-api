@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Header from './components/Header/Header';
 import Modal from '@mui/material/Modal';
@@ -12,8 +11,12 @@ const defaultTheme = createTheme();
 
 function App() {
   const [user, setUser] = useState<string>('');
+  const [token, setToken] = useState<string>('');
   const [openModalSignUp, setOpenModalSignUp] = useState<boolean>(false);
   const [openModalSignIn, setOpenModalSignIn] = useState<boolean>(false);
+
+  const changeUser = (name: string) => setUser(name);
+  const changeToken = (token: string) => setToken(token);
 
   const signUpHandleClick = () => setOpenModalSignUp(true);
   const signInHandleClick = () => setOpenModalSignIn(true);
@@ -21,6 +24,11 @@ function App() {
     setOpenModalSignUp(false);
     setOpenModalSignIn(false);
   }
+
+  useEffect(() => {
+    setOpenModalSignUp(false);
+    setOpenModalSignIn(false);
+  }, [user])
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -32,17 +40,13 @@ function App() {
           signInHandleClick={signInHandleClick} />
         <Modal
           open={openModalSignUp}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description">
+          onClose={handleClose}>
             <SignUp />
         </Modal>
         <Modal
           open={openModalSignIn}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description">
-            <SignIn />
+          onClose={handleClose}>
+            <SignIn changeUser={changeUser} changeToken={changeToken} />
         </Modal>
       </Container>
     </ThemeProvider>
