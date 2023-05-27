@@ -56,16 +56,48 @@ export const addRecord = async (req: Request, res: Response): Promise<void> => {
       mediaPath: mediaPath,
       UserId: UserId
     };
-    RecordModel.create(data);
+    await RecordModel.create(data);
     res.status(200).send('New record successfully added');
     return;
   } catch (error) {
-    res.status(500).send(`Adding record error: ${error}`);
+    res.status(500).send(`Error adding Record: ${error}`);
   }
 };
 
 // добавить мидлвар на проверку юзера и записи
 
-export const editRecord = async (req: Request, res: Response): Promise<void> => {};
+export const editRecord = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = req.params.id;
+    const [data] = await RecordModel.update(req.body, {
+      where: { id: id }
+    });
+    if (data === 1) {
+      res.status(200).send('Record was updated successfully');
+      return;
+    } else {
+      res.status(500).send('Cannot update Record');
+      return;
+    }
+  } catch (error) {
+    res.status(500).send(`Error updating Record: ${error}`);
+  }
+};
 
-export const deleteRecord = async (req: Request, res: Response): Promise<void> => {};
+export const deleteRecord = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = req.params.id;
+    const data = await RecordModel.destroy({
+      where: { id: id }
+    });
+    if (data === 1) {
+      res.status(200).send('Record was deleted successfully');
+      return;
+    } else {
+      res.status(500).send('Cannot delete Record');
+      return;
+    }
+  } catch (error) {
+    res.status(500).send(`Error deleting Record: ${error}`);
+  }
+};
