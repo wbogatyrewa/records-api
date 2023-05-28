@@ -37,7 +37,7 @@ export default function Record({ record }: RecordProps) {
             <CardMedia
               component="img"
               sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
-              image={record.media}
+              image={`http://localhost:5000\\${record.media}`}
               alt={record.media}
             />
           }

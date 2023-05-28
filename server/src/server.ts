@@ -25,6 +25,7 @@ const storageConfig = multer.diskStorage({
 app.use(cors(options));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/media', express.static('./media'));
 app.use(express.static(__dirname));
 app.use(multer({storage:storageConfig}).single("media"));
 
