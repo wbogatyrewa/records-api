@@ -9,6 +9,8 @@ import Record from '../Record/Record';
 import { getRecords } from '../../api/getRecords';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Modal from '@mui/material/Modal';
+import RecordForm from '../RecordForm/RecordForm';
 
 interface BlogProps {
   user: string;
@@ -19,7 +21,8 @@ const defaultTheme = createTheme();
 
 export default function Blog({ user, token }: BlogProps) {
   const [page, setPage] = useState<number>(1);
-  const [totalItems, setTotalItems] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [openModalRecordForm, setOpenModalRecordForm] = useState<boolean>(false);
   const [records, setRecords] = useState<
     {
       id: number;
@@ -29,9 +32,23 @@ export default function Blog({ user, token }: BlogProps) {
       user: string;
     }[]>([]);
 
+  const totalPagesChange = (pages: number) => {
+    setTotalPages(pages);
+  }
+
+  const recordsChange = (recordsList: []) => {
+    setRecords(recordsList);
+  }
+
+  const addHandleClick = () => setOpenModalRecordForm(true);;
+
+  const handleClose = () => {
+    setOpenModalRecordForm(false);
+  }
+
   useEffect(() => {
     getRecords(page - 1).then(result => {
-      setTotalItems(result['totalPages']);
+      setTotalPages(result['totalPages']);
       setRecords(result['records'].map((record: any) => {
         return {
           id: record['id'],
@@ -49,6 +66,26 @@ export default function Blog({ user, token }: BlogProps) {
       <Container maxWidth="lg">
         <CssBaseline />
         <main>
+          {user && 
+            <Box mb={4}>
+              <Button 
+                onClick={addHandleClick}
+                variant='contained'>
+                  Add record
+              </Button>
+            </Box>
+          }
+          <Modal
+            open={openModalRecordForm}
+            onClose={handleClose}>
+              <RecordForm 
+                token={token} 
+                handleClose={handleClose} 
+                page={page}
+                totalPagesChange={totalPagesChange}
+                recordsChange={recordsChange} />
+
+          </Modal>
           <Grid container spacing={4}>
             {records.map((record) => (
               <Record key={record.id} record={record} />
@@ -57,7 +94,7 @@ export default function Blog({ user, token }: BlogProps) {
           <Box mt={4}></Box>
           <Stack spacing={2} sx={{ alignItems: 'center' }}>
             <Pagination 
-              count={totalItems} 
+              count={totalPages} 
               page={page}
               onChange={(e, value) => setPage(value)}
               variant="outlined" 

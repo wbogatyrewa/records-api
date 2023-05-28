@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import RecordModel from '../models/record';
-import { UploadedFile } from 'express-fileupload';
 import fs from 'fs';
 import UserModel from '../models/user';
+import { UploadedFile } from 'express-fileupload';
 
 interface Pagination {
   limit: number;
@@ -68,27 +68,16 @@ export const getRecords = async (req: Request, res: Response): Promise<void> => 
 export const addRecord = async (req: Request, res: Response): Promise<void> => {
   try {    
     const { UserId, text } = req.body;
-    const file = (req.files?.media) as UploadedFile;
+    const mediaPath = req.file?.path;
 
-    if (!text && !file) {
+    if (!text && !mediaPath) {
       res.status(500).send('Content can not be empty');
       return;
     }
 
-    let mediaPath = '';
-    if (file) {
-      mediaPath = `/media/${(new Date()).toLocaleString()}`;
-      file.mv(`../..${mediaPath}`, function(error) {
-        if (error) {
-          res.status(500).send(`No files were uploaded: ${error}`);
-          return;
-        }
-      });
-    }
-
     const record = {
       text: text,
-      mediaPath: mediaPath,
+      mediaPath: mediaPath || '',
       UserId: UserId
     };
     
