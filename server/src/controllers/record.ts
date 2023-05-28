@@ -189,10 +189,13 @@ export const deleteRecord = async (req: Request, res: Response): Promise<void> =
     }
 
     const oldPath = recordById.get('mediaPath');
-    fs.unlink(`../..${oldPath}`, (err) => {
-      if (err) throw err;
-      console.log('Delete file');
-    });
+    const curDir = __dirname.split('\\').slice(0, -2).join('\\');
+    if (oldPath) {
+      fs.unlink(`${curDir}\\${oldPath}`, (err) => {
+        if (err) throw err;
+        console.log('Delete file');
+      });
+    }
 
     const data = await RecordModel.destroy({
       where: { id: id }

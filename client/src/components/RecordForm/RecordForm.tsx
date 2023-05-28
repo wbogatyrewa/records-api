@@ -11,6 +11,7 @@ import { addRecords } from '../../api/addRecord';
 import { getRecords } from '../../api/getRecords';
 import { getRecord } from '../../api/getRecord';
 import { editRecord } from '../../api/editRecord';
+import { deleteRecord } from '../../api/deleteRecord';
 
 interface RecordFormProps {
   id?: number;
@@ -111,7 +112,22 @@ export default function RecordForm({
     });
   };
 
-  const deleteHandleSubmit = () => {};
+  const deleteHandleSubmit = () => {
+    deleteRecord(id || 1, token).then(result => {
+      handleClose();
+      getRecords((page || 1) - 1).then(result => {
+        recordsChange(result['records'].map((record: any) => {
+          return {
+            id: record['id'],
+            date: record['createdAt'],
+            text: record['text'],
+            media: record['mediaPath'],
+            user: record['User']['name']
+          }
+        }));
+      });
+    });
+  };
 
 
   useEffect(() => {
