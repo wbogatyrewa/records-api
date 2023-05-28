@@ -56,7 +56,7 @@ export const getRecords = async (req: Request, res: Response): Promise<void> => 
 };
 
 /** 
- * Retrieves record from the database. 
+ * Retrieves a record from the database. 
  * 
  * @async 
  * @method getRecord 

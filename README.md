@@ -14,6 +14,9 @@ Logs in a user with the given name and password using jwt.
 ### GET /api/records/
 Retrieves a paginated list of records from the database.
 
+### GET /api/record/:id
+Retrieves a record from the database.
+
 ### POST /api/records/add 
 Adds a new record to the database with the given information.
 
