@@ -1,6 +1,6 @@
 export const deleteRecord = async (id: number, token: string) => {
   try {
-    const url = `http://localhost:5000/api/records/delete/${id}`;
+    const url = `http://5.188.50.113:5000/api/records/delete/${id}`;
     const response = await fetch(url, {
       method: 'POST',
       headers: {

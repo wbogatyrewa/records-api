@@ -1,6 +1,6 @@
 export const getRecord = async (id: number) => {
   try {
-    const url = `http://localhost:5000/api/records/${id}`;
+    const url = `http://5.188.50.113:5000/api/records/${id}`;
     const response = await fetch(url);
     return await response.json();
   } catch (error) {

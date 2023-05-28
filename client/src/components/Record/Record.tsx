@@ -38,7 +38,7 @@ export default function Record({ record, handleRecordClick = () => {} }: RecordP
             <CardMedia
               component="img"
               sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
-              image={`http://localhost:5000\\${record.media}`}
+              image={`http://5.188.50.113:5000\\${record.media}`}
               alt={record.media}
             />
           }

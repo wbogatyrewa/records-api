@@ -109,7 +109,7 @@ export default function Blog({ user, token }: BlogProps) {
             ))}
           </Grid>
           <Box mt={4}></Box>
-          <Stack spacing={2} sx={{ alignItems: 'center' }}>
+          <Stack spacing={2} sx={{ alignItems: 'center', mb: 4 }}>
             <Pagination 
               count={totalPages} 
               page={page}

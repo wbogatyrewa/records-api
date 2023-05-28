@@ -1,6 +1,6 @@
 export const signin = async (name: string, password: string) => {
   try {
-    const url = 'http://localhost:5000/api/users/login';
+    const url = 'http://5.188.50.113:5000/api/users/login';
     const user = {
       name: name,
       password: password

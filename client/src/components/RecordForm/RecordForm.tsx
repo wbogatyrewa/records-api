@@ -180,7 +180,7 @@ export default function RecordForm({
                   <Button
                     variant="contained"
                     onClick={editHandleSubmit}
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={{ mt: 3, mb: 2, mr: 2 }}
                   >
                     Edit
                   </Button>
