@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import RecordModel from '../models/record';
 import { UploadedFile } from 'express-fileupload';
 import fs from 'fs';
+import UserModel from '../models/user';
 
 interface Pagination {
   limit: number;
@@ -44,8 +45,9 @@ export const getRecords = async (req: Request, res: Response): Promise<void> => 
     const { page, size } = req.query;
     const { limit, offset } = getPagination((page || '').toString(), (size || '').toString());
     
-    const data = await RecordModel.findAndCountAll({ where: {}, limit, offset });
+    const data = await RecordModel.findAndCountAll({ where: {}, limit, offset, include: UserModel });
     const records = getPagingData(data, (page || '').toString(), limit);
+
     res.status(200).send(records);
     return;
   } catch (error) {
@@ -73,13 +75,16 @@ export const addRecord = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const mediaPath = `/media/${(new Date()).toLocaleString()}`;
-    file.mv(`../..${mediaPath}`, function(error) {
-      if (error) {
-        res.status(500).send(`No files were uploaded: ${error}`);
-        return;
-      }
-    });
+    let mediaPath = '';
+    if (file) {
+      mediaPath = `/media/${(new Date()).toLocaleString()}`;
+      file.mv(`../..${mediaPath}`, function(error) {
+        if (error) {
+          res.status(500).send(`No files were uploaded: ${error}`);
+          return;
+        }
+      });
+    }
 
     const record = {
       text: text,
