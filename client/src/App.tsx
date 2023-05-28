@@ -6,6 +6,8 @@ import Header from './components/Header/Header';
 import Modal from '@mui/material/Modal';
 import SignUp from './components/SignUp/SignUp';
 import SignIn from './components/SignIn/SignIn';
+import Blog from './components/Blog/Blog';
+import Box from '@mui/material/Box';
 
 const defaultTheme = createTheme();
 
@@ -48,6 +50,8 @@ function App() {
           onClose={handleClose}>
             <SignIn changeUser={changeUser} changeToken={changeToken} />
         </Modal>
+        <Box mt={4}></Box>
+        <Blog user={user} token={token} />
       </Container>
     </ThemeProvider>
   );
