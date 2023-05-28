@@ -7,9 +7,9 @@ export const editRecord = async (id: number, formData: FormData, token: string) 
         'x-access-token': token
       },
       body: formData
-    });
-    return await response.json();
+    });    
+    if (response.status === 401) return alert('You are not the author');
+    return await response.json();;
   } catch (error) {
-    
   }
 };
