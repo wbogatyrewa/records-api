@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { addRecords } from '../../api/addRecord';
 import { getRecords } from '../../api/getRecords';
+import { getRecord } from '../../api/getRecord';
 
 interface RecordFormProps {
   id?: number;
@@ -37,13 +38,13 @@ const style = {
 };
 
 export default function RecordForm({ 
-  id, recordText, media, token, handleClose = () => {},
-  page, totalPagesChange = (pages: number) => {},
-  recordsChange = (recordsList: []) => {},
+  id, token, handleClose = () => {},
+  page, totalPagesChange = () => {},
+  recordsChange = () => {},
   editOrDelete = false }: RecordFormProps) {
 
   const [file, setFile] = useState<File>();
-  const [text, setText] = useState<string>(recordText || '');
+  const [text, setText] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
 
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +89,14 @@ export default function RecordForm({
   const deleteHandleSubmit = () => {};
 
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (id && editOrDelete) {
+      getRecord(id).then(record => {
+        setText(record.text);
+        setFile(record.media);
+      })
+    }
+  }, [id, editOrDelete]);
 
   return (
     <Box sx={style}>

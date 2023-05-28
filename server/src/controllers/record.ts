@@ -56,6 +56,26 @@ export const getRecords = async (req: Request, res: Response): Promise<void> => 
 };
 
 /** 
+ * Retrieves record from the database. 
+ * 
+ * @async 
+ * @method getRecord 
+ * @param {Request} req - Express request object. 
+ * @param {Response} res - Express response object. 
+ * @returns {Promise<void>} - Promise that resolves when the record is retrieved from the database. 
+ * @throws {Error} - Throws an error if there is an issue retrieving the record. 
+ */ 
+export const getRecord = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const data = await RecordModel.findByPk(req.params.id);
+    res.status(200).send(data);
+    return;
+  } catch (error) {
+    res.status(500).send(`Getting records failed with error: ${error}`);
+  }
+};
+
+/** 
  * Adds a new record to the database with the given information. 
  * 
  * @async 

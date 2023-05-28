@@ -14,13 +14,13 @@ interface RecordProps {
     media: string;
     user: string;
   };
-  handleRecordClick?: () => void;
+  handleRecordClick?: (event:  React.MouseEvent<HTMLButtonElement>, key: number) => void;
 }
 
 export default function Record({ record, handleRecordClick = () => {} }: RecordProps) {
   return (
     <Grid item xs={12} md={6} lg={3}>
-      <CardActionArea component="button" onClick={handleRecordClick}>
+      <CardActionArea component="button" onClick={(event) => handleRecordClick(event, record.id)}>
         <Card sx={{ display: 'flex' }}>
           <CardContent sx={{ flex: 1 }}>
             <Typography component="h2" variant="h5">

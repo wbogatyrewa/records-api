@@ -24,6 +24,7 @@ export default function Blog({ user, token }: BlogProps) {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [openModalRecordForm, setOpenModalRecordForm] = useState<boolean>(false);
   const [editOrDelete, setEditOrDelete] = useState<boolean>(false);
+  const [id, setId] = useState<number>(1);
   const [records, setRecords] = useState<
     {
       id: number;
@@ -41,16 +42,20 @@ export default function Blog({ user, token }: BlogProps) {
     setRecords(recordsList);
   };
 
-  const addHandleClick = () => setOpenModalRecordForm(true);
+  const addHandleClick = () => {
+    setOpenModalRecordForm(true);
+    setEditOrDelete(false);
+  }
 
   const handleClose = () => {
     setOpenModalRecordForm(false);
   };
 
-  const handleRecordClick = () => {
+  const handleRecordClick = (event:  React.MouseEvent<HTMLButtonElement>, key: number) => {
     if (user) {
       setOpenModalRecordForm(true);
       setEditOrDelete(true);
+      setId(key);
     }
   };
 
@@ -87,6 +92,7 @@ export default function Blog({ user, token }: BlogProps) {
             open={openModalRecordForm}
             onClose={handleClose}>
               <RecordForm 
+                id={id}
                 token={token} 
                 handleClose={handleClose} 
                 page={page}
