@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import RecordModel from '../models/record';
 import fs from 'fs';
 import UserModel from '../models/user';
-import { UploadedFile } from 'express-fileupload';
 
 interface Pagination {
   limit: number;
