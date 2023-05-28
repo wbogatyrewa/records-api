@@ -57,6 +57,9 @@ export default function Blog({ user, token }: BlogProps) {
       setEditOrDelete(true);
       setId(key);
     }
+    else {
+      alert('Please, Sign up or Sign in');
+    }
   };
 
   useEffect(() => {

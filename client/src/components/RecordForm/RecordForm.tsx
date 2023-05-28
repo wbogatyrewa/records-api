@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import { addRecords } from '../../api/addRecord';
 import { getRecords } from '../../api/getRecords';
 import { getRecord } from '../../api/getRecord';
+import { editRecord } from '../../api/editRecord';
 
 interface RecordFormProps {
   id?: number;
@@ -84,7 +85,31 @@ export default function RecordForm({
     });
   };
 
-  const editHandleSubmit = () => {};
+  const editHandleSubmit = () => {
+    if (!text && !file) {
+      setError(true);
+      return;
+    }
+
+    const formData: any = new FormData();
+    formData.append('text', text);
+    formData.append('media', file);
+
+    editRecord(id || 1, formData, token).then(result => {
+      handleClose();
+      getRecords((page || 1) - 1).then(result => {
+        recordsChange(result['records'].map((record: any) => {
+          return {
+            id: record['id'],
+            date: record['createdAt'],
+            text: record['text'],
+            media: record['mediaPath'],
+            user: record['User']['name']
+          }
+        }));
+      });
+    });
+  };
 
   const deleteHandleSubmit = () => {};
 

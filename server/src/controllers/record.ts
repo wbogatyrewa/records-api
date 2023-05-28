@@ -130,30 +130,25 @@ export const editRecord = async (req: Request, res: Response): Promise<void> => 
     }
 
     const { UserId, text } = req.body;
-    const file = (req.files?.media) as UploadedFile; 
+    const mediaPath = req.file?.path;
 
-    if (!text && !file) {
+    if (!text && !mediaPath) {
       res.status(500).send('Content can not be empty');
       return;
     }
 
-    const mediaPath = `/media/${(new Date()).toLocaleString()}`;
-    file.mv(mediaPath, function(error) {
-      if (error) {
-        res.status(500).send(`No files were uploaded: ${error}`);
-        return;
-      }
-    });
-
     const oldPath = recordById.get('mediaPath');
-    fs.unlink(`../..${oldPath}`, (err) => {
-      if (err) throw err;
-      console.log('Delete file');
-    });
+    const curDir = __dirname.split('\\').slice(0, -2).join('\\');
+    if (oldPath) {
+      fs.unlink(`${curDir}\\${oldPath}`, (err) => {
+        if (err) throw err;
+        console.log('Delete file');
+      });
+    }
 
     const updateRecord = {
       text: text,
-      mediaPath: mediaPath,
+      mediaPath: mediaPath || '',
       UserId: UserId
     };
 
