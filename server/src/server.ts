@@ -30,7 +30,7 @@ app.use(function(req: Request, res: Response, next: NextFunction) {
   next();
 });
 
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync().then(() => {
   console.log('Database has been synced');
 });
 
