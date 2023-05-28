@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEventHandler, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
@@ -11,6 +11,7 @@ import { addRecords } from '../../api/addRecord';
 import { getRecords } from '../../api/getRecords';
 
 interface RecordFormProps {
+  id?: number;
   recordText?: string;
   media?: string;
   token: string;
@@ -18,6 +19,7 @@ interface RecordFormProps {
   page?: number;
   totalPagesChange?: (pages: number) => void;
   recordsChange?: (recordsList: []) => void;
+  editOrDelete: boolean;
 }
 
 const defaultTheme = createTheme();
@@ -35,9 +37,10 @@ const style = {
 };
 
 export default function RecordForm({ 
-  recordText, media, token, handleClose = () => {},
+  id, recordText, media, token, handleClose = () => {},
   page, totalPagesChange = (pages: number) => {},
-  recordsChange = (recordsList: []) => {} }: RecordFormProps) {
+  recordsChange = (recordsList: []) => {},
+  editOrDelete = false }: RecordFormProps) {
 
   const [file, setFile] = useState<File>();
   const [text, setText] = useState<string>(recordText || '');
@@ -80,6 +83,13 @@ export default function RecordForm({
     });
   };
 
+  const editHandleSubmit = () => {};
+
+  const deleteHandleSubmit = () => {};
+
+
+  useEffect(() => {}, []);
+
   return (
     <Box sx={style}>
       <ThemeProvider theme={defaultTheme}>
@@ -115,13 +125,33 @@ export default function RecordForm({
                 </Grid>
                 
               </Grid>
-              <Button
-                variant="contained"
-                onClick={addHandleSubmit}
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Add
-              </Button>
+              {
+                editOrDelete ? 
+                <>
+                  <Button
+                    variant="contained"
+                    onClick={editHandleSubmit}
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={deleteHandleSubmit}
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Delete
+                  </Button>
+                </>
+                : 
+                <Button
+                  variant="contained"
+                  onClick={addHandleSubmit}
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Add
+                </Button>
+              }
             </form>
           </Box>
         </Container>

@@ -23,6 +23,7 @@ export default function Blog({ user, token }: BlogProps) {
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [openModalRecordForm, setOpenModalRecordForm] = useState<boolean>(false);
+  const [editOrDelete, setEditOrDelete] = useState<boolean>(false);
   const [records, setRecords] = useState<
     {
       id: number;
@@ -34,17 +35,24 @@ export default function Blog({ user, token }: BlogProps) {
 
   const totalPagesChange = (pages: number) => {
     setTotalPages(pages);
-  }
+  };
 
   const recordsChange = (recordsList: []) => {
     setRecords(recordsList);
-  }
+  };
 
-  const addHandleClick = () => setOpenModalRecordForm(true);;
+  const addHandleClick = () => setOpenModalRecordForm(true);
 
   const handleClose = () => {
     setOpenModalRecordForm(false);
-  }
+  };
+
+  const handleRecordClick = () => {
+    if (user) {
+      setOpenModalRecordForm(true);
+      setEditOrDelete(true);
+    }
+  };
 
   useEffect(() => {
     getRecords(page - 1).then(result => {
@@ -83,12 +91,12 @@ export default function Blog({ user, token }: BlogProps) {
                 handleClose={handleClose} 
                 page={page}
                 totalPagesChange={totalPagesChange}
-                recordsChange={recordsChange} />
-
-          </Modal>
+                recordsChange={recordsChange}
+                editOrDelete={editOrDelete} />
+          </Modal>          
           <Grid container spacing={4}>
             {records.map((record) => (
-              <Record key={record.id} record={record} />
+              <Record key={record.id} record={record} handleRecordClick={handleRecordClick} />
             ))}
           </Grid>
           <Box mt={4}></Box>
