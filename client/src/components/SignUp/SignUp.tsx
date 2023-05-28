@@ -36,9 +36,7 @@ export default function SignUp() {
     if (name && password) {
       setError(false);
       signup(name, password).then(result => {
-        if (result || 0 >= 400) alert(`Result of sign up: error with status ${result}`);
-        else alert(`Result of sign up: successfully with status ${result}`);
-        
+        alert(`Result of sign up: status ${result}`);
       })
     }
     else {
