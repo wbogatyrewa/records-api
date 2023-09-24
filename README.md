@@ -3,7 +3,6 @@
 ## Description
 
 This is a frontend built using React. It communicates with the API server to display and manipulate data.
-Located at http://records.u2255434.isp.regruhosting.ru/
 
 # API Server
 
