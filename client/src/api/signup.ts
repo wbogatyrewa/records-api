@@ -1,7 +1,6 @@
 export const signup = async (name: string, password: string) => {
   try {
-    const url =
-      "http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/users/signup";
+    const url = `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/users/signup`;
     const user = {
       name: name,
       password: password,
